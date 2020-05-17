@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="../template.xhtml"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+
+    <ui:define name="title">ADMİN-KULLANICI</ui:define>
+
+
+    <ui:define name="header-top">
+        <!-- ADD BİKE BUTON VE MODALI -->
+
+        <section id="add">
+            <div class="row text-center mt-5">
+                <div class="col-md-6 mx-auto">
+                    <h:commandButton onclick="$('#add-modal').modal('show')" value="Yeni Kullanici Ekle" class="btn btn-primary">
+                        <f:ajax execute="@this"></f:ajax>
+                    </h:commandButton>
+
+                </div>
+            </div>
+
+            <div id="add-modal" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <h:form id="add-mymodal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Eklenecek Kullanici</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div id="addmodalbody" class="modal-body text-center">
+
+                                <div class="pb-1">
+                                    <p>Name</p>
+                                    <h:inputText class="form-control" value="#{kullaniciController.kullanici.name}"/>
+                                </div>
+                                <div class="pb-1">
+                                    <p>Surname</p>
+                                    <h:inputText class="form-control" value="#{kullaniciController.kullanici.surname}"/>
+                                </div>
+                                <div class="pb-1">
+                                    <p>Password</p>
+                                    <h:inputText  class="form-control" value="#{kullaniciController.kullanici.pass}"/>
+                                </div>
+                                <div class="pb-1">
+                                    <p>Gender</p>
+                                    <h:selectOneMenu class="custom-select" value="#{kullaniciController.kullanici.gender}">
+                                        <f:selectItem itemLabel="Erkek" itemValue="true"></f:selectItem>
+                                        <f:selectItem itemLabel="Bayan" itemValue="false"></f:selectItem>
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="pb-1">
+                                    <p>Role</p>
+                                    <h:selectOneMenu class="custom-select" value="#{kullaniciController.kullanici.role}">
+                                        <f:selectItem itemLabel="Admin" itemValue="#{bisikletController.admin}"/>
+                                        <f:selectItem itemLabel="Guest" itemValue="#{bisikletController.guest}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="pb-1">
+                                    <p>Bisikletleri</p>
+                                    <h:selectManyMenu value="#{kullaniciController.kullanici.bisikletler}" styleClass="custom-select" converter="bisikletConverter"><br/>
+                                        <f:selectItems value="#{kullaniciController.bisikletcontroller.bisikletList}" var="bisiklet" itemValue="#{bisiklet}" itemLabel="#{bisiklet.marka}" />
+                                    </h:selectManyMenu>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
+                                <h:commandButton onclick="$('#add-modal').modal('hide')" class="btn btn-primary" action="#{kullaniciController.create()}" value="Oluştur">
+                                    <f:ajax execute="add-mymodal @this" render="kullanici-list"/>
+                                </h:commandButton>
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+
+        </section>
+
+<!-- Kullanici kartları -->
+        <header>
+            <hr></hr>
+            <h:form  id="kullanici-list">
+                <div class="row my-auto">
+                    <c:forEach items="#{kullaniciController.liste}" var="kullanici">
+                        <c:if test="#{kullanici.kullanici_id!=1}">
+                        <div class="col-md-2 mt-2">
+                            <div class="card bg-ligt mb-2 text-center mt-2">
+                                <div class="card-header">
+                                    <p>Kullanici Bilgileri</p>
+                                </div>
+                                <div class="card-body">
+                                    <h:graphicImage style="background: rgba(0,0,0,.5)" class="img-fluid rounded-circle my-3" rendered="#{kullanici.gender==true}" value="../resources/images/bay.png"/>
+                                    <h:graphicImage class="img-fluid rounded-circle my-3" rendered="#{kullanici.gender==false}" value="../resources/images/391-3919484_bayan-retmen-profil-kafa-kadn-female-user-icon.png"
+                                                    style="width: 225px; height: 225px;" />
+                                </div>
+
+                                <div class="card-body">
+                                    <em class="text-muted">Adı</em>
+                                    <div class="pb-1">
+                                        <h:outputText value="#{kullanici.name}"/>
+                                    </div>
+                                    <em class="text-muted">Şifresi</em>
+                                    <div class="pb-1">
+                                        <h:outputText value="#{kullanici.pass}"/>
+                                    </div>
+                                    <em class="text-muted">Soyadı</em>
+                                    <div class="pb-1">
+                                        <h:outputText value="#{kullanici.surname}"/>
+                                    </div>
+                                    <em class="text-muted">Cinsiyeti</em>
+                                    <div class="pb-1">
+                                        <h:outputText rendered="#{kullanici.gender==true}" value="Erkek"/>
+                                        <h:outputText rendered="#{kullanici.gender==false}" value="Bayan"/>
+                                    </div>
+                                    <em class="text-muted">Role</em>
+                                    <div class="pb-1">
+                                        <h:outputText rendered="#{kullanici.role==1}" value="Admin"/>
+                                        <h:outputText rendered="#{kullanici.role!=1}" value="Misafir"/>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="btn-group text-center">
+                                        <c:if test="#{kullanici.kullanici_id!=kullaniciController.kullanicifilter.kullanici_id}">
+                                            <h:commandButton onclick="$('#delete-modal').modal('show')" value="Sil" class="btn btn-danger" action="#{kullaniciController.kullaniciata(kullanici)}">
+                                                <f:ajax execute="@this" render="delete-mymodal"/>
+                                            </h:commandButton>
+                                            <h:commandButton onclick="$('#update-modal').modal('show')" value="Güncelle" class="btn btn-secondary" action="#{kullaniciController.kullaniciata(kullanici)}">
+                                                <f:ajax execute="@this" render="update-mymodal"></f:ajax>
+                                            </h:commandButton>
+                                        </c:if>
+                                        <c:if test="#{kullanici.kullanici_id==kullaniciController.kullanicifilter.kullanici_id}">
+                                            <h:commandButton class="btn btn-primary" value="Siz">
+                                                <f:ajax execute="@this"></f:ajax>
+                                            </h:commandButton>
+
+                                        </c:if>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        </c:if>
+                    </c:forEach>
+                </div>
+
+            </h:form>
+        </header>
+
+        <!--MODALLAR -->
+        <section>
+
+            <div id="delete-modal" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <h:form id="delete-mymodal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Silinecek Kullanici</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-center">
+
+                                <div class="pb-1">
+                                    <h:graphicImage style="background: rgba(0,0,0,.5)" class="img-fluid rounded-circle my-3" rendered="#{kullaniciController.kullanici.gender==true}" value="../resources/images/bay.png"/>
+                                    <h:graphicImage class="img-fluid rounded-circle my-3" rendered="#{kullaniciController.kullanici.gender==false}" value="../resources/images/391-3919484_bayan-retmen-profil-kafa-kadn-female-user-icon.png"
+                                                    style="width: 225px; height: 225px;" />
+                                </div>
+                                <div class="pb-1">
+                                    <h:outputText class="form-control" value="#{kullaniciController.kullanici.name}"/>
+                                </div>
+                                <div class="pb-1">
+                                    <h:outputText class="form-control" value="#{kullaniciController.kullanici.surname}"/>
+                                </div>
+                                <div class="pb-1">
+                                    <h:outputText class="form-control" value="#{kullaniciController.kullanici.pass}"/>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
+                                <h:commandButton onclick="$('#delete-modal').modal('hide')" class="btn btn-primary" action="#{kullaniciController.delete()}" value="Eminim,Sil">
+                                    <f:ajax execute="@this" render="kullanici-list"/>
+                                </h:commandButton>
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+
+            <!-- UPDATE MODAL -->
+
+            <div id="update-modal" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <h:form id="update-mymodal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Güncellenecek Kullanici</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-center">
+
+                                <div class="pb-1">
+                                    <h:graphicImage style="background: rgba(0,0,0,.5)" class="img-fluid rounded-circle my-3" rendered="#{kullaniciController.kullanici.gender==true}" value="../resources/images/bay.png"/>
+                                    <h:graphicImage class="img-fluid rounded-circle my-3" rendered="#{kullaniciController.kullanici.gender==false}" value="../resources/images/391-3919484_bayan-retmen-profil-kafa-kadn-female-user-icon.png"
+                                                    style="width: 225px; height: 225px;" />
+                                </div>
+                                <div class="pb-1">
+                                    <h:inputText class="form-control" value="#{kullaniciController.kullanici.name}"/>
+                                </div>
+                                <div class="pb-1">
+                                    <h:inputText class="form-control" value="#{kullaniciController.kullanici.surname}"/>
+                                </div>
+                                <div class="pb-1">
+                                    <h:inputText class="form-control" value="#{kullaniciController.kullanici.pass}"/>
+                                </div>
+                                <div class="pb-1">
+                                    <h:selectOneMenu class="custom-select" value="#{kullaniciController.kullanici.role}">
+                                        <f:selectItem itemLabel="Admin" itemValue="#{kullaniciController.admin}"/>
+                                        <f:selectItem itemLabel="Guest" itemValue="#{kullaniciController.guest}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="pb-1">
+                                    <h:selectOneMenu class="custom-select" value="#{kullaniciController.kullanici.gender}">
+                                        <f:selectItem itemLabel="Erkek" itemValue="true"></f:selectItem>
+                                        <f:selectItem itemLabel="Bayan" itemValue="false"></f:selectItem>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
+                                <h:commandButton onclick="$('#update-modal').modal('hide')" class="btn btn-primary" action="#{kullaniciController.update()}" value="Güncelle">
+                                    <f:ajax execute="update-mymodal @this" render="kullanici-list"/>
+                                </h:commandButton>
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+
+
+
+
+
+        </section>
+
+    </ui:define>
+
+
+
+</ui:composition>
