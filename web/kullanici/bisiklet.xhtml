@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="../template.xhtml"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <ui:define name="title">BİSİKLET</ui:define>
+
+    <ui:define name="header-foot">
+
+
+    </ui:define>
+
+    <ui:define name="content" >
+
+
+        <hr id="usthr"></hr>
+        <h:form id="mybikecontent"> 
+            <div class="container mb-0 mt-3 text-center">
+                <p class="header-p"><i class="fas fa-quote-left"></i>Birbirinden Güzel Deneyimleriniz İçin..
+                </p>
+                <pre>Page #{bisikletController.page} of #{bisikletController.pageCount}</pre>
+                <div class="btn-group">
+                        <h:commandButton action="#{bisikletController.previous()}" value="Previous" styleClass="btn btn-outline-dark"/>
+                        <h:commandButton action="#{bisikletController.next()}" value="Next" styleClass="btn btn-outline-dark"/>
+                </div>
+                <div class="row">
+                    <ui:repeat value="#{bisikletController.bisikletList}" var="bisiklet">
+                        <div id="bisiklet" class="col-md-3 mb-5">
+                            <div class="card text-center card-cascade wider reverse">
+                                <div class="card-header">Bisiklet</div>
+                                <div class="view view-cascade overlay mb-3">
+                                    <img class="card-img-top" src="../resources/images/indir.jpg"/>
+                                    <h:outputText value="Ücret"/> <h3 class="">#{bisiklet.ucret}<i class="fas fa-lira-sign"></i></h3>
+
+                                </div>
+                                <div class="card-body">
+                                    <h:outputText value="#{bisiklet.marka}"/>
+                                </div>
+                                <hr></hr>
+                                <div class="card-body">
+                                    <h:outputText value="#{bisiklet.model}"/>
+                                </div>
+                                   <hr></hr>
+                                <p class="card-text text-muted">
+                                    <em>Sağlık İçin Sür</em></p>
+
+
+                                <div id="butonfooter" class="mycard-footer text-center">
+                                    <h:commandButton onclick="$('.modal').modal('show')"  rendered="#{bisiklet.kullanici.kullanici_id==1}" class="btn btn-info btn-block" value="Kirala" action="#{bisikletController.bisikletata(bisiklet)}">
+                                        <f:ajax execute="@this" render="modal-panel"/>
+                                    </h:commandButton>
+                                    <h:commandButton rendered="#{bisiklet.kullanici.kullanici_id!=1 and kullaniciController.kullanicifilter.kullanici_id!=bisiklet.kullanici.kullanici_id}" class="btn btn-danger btn-block" value="Kiralanmış">
+                                        <f:ajax execute="@this"/>
+                                    </h:commandButton>
+                                    <h:commandButton rendered="#{bisiklet.kullanici.kullanici_id==kullaniciController.kullanicifilter.kullanici_id}" class="btn btn-secondary btn-block" value="İade Et" action="#{bisikletController.iadeEt(bisiklet)}">
+                                        <f:ajax execute="@this" render="mybikecontent"/>
+                                    </h:commandButton>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </ui:repeat>>
+
+                </div>
+
+            </div>
+        </h:form>
+
+        <!-- Large modal -->
+
+        <!-- KİRALA EKRANININ AÇILDIGI MODAL-->
+
+        <div id="modal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <h:form id="modal-panel">
+                    <h:panelGroup class="modal-content" layout="block">
+
+                        <div class="modal-header">Kiralamak İstediginiz Ürün</div>
+                        <div class="modal-body">
+
+                            <div id="view-overlay" class="view overlay text-center">
+                                <img class="card-img-top" src="../resources/images/heylan.jpg" alt="Card image cap" style="width: 100vh; height: 50vh"/>
+                                <a>
+                                    <div class="mask rgba-white-slight"></div>
+                                </a>
+                            </div>
+
+                            <div id="markamodel" class="card-body card-body-cascade text-center my-auto">
+                                <h:outputText value="#{bisikletController.bisiklet.marka}"/> <br/>
+                                <h:outputText value="#{bisikletController.bisiklet.model}"/>
+                            </div>
+                            <div class="card-body">
+                                <h:selectOneMenu value="#{bisikletController.gun}" class="form-control">
+                                    <f:selectItem itemLabel="1 Gün" itemValue="1"/>
+                                    <f:selectItem itemLabel="2 Gün" itemValue="2"/>
+                                    <f:selectItem itemLabel="3 Gün" itemValue="3"/>
+                                    <f:selectItem itemLabel="1 Hafta" itemValue="7"/>
+                                    <f:selectItem itemLabel="1 Ay" itemValue="30"/>
+                                    <h:outputText value="Ödeyeceğiniz Ücret  #{bisikletController.netUcret()} TL" />
+                                    <f:ajax execute="@this" render="modal-panel"/>
+
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="card-header text-muted">
+                                <p><em>Sizin Kullanım Süresince Gelen Zararlardan Kullanıcı Sorumludur..</em></p>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer rounded-bottom mdb-color lighten-3 text-center pt-3">
+
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <h:commandButton onclick="$('.modal').modal('hide')" action="#{bisikletController.kirala()}" value="Kirala" class="btn btn-primary">
+                                <f:ajax execute="@this" render="mybikecontent"/>
+                            </h:commandButton>
+
+                        </div>
+
+                    </h:panelGroup>
+                </h:form>
+            </div>
+
+        </div>
+
+    </ui:define>
+
+
+
+</ui:composition>

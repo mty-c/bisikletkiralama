@@ -1,0 +1,128 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 25.Mar.2020, 13:24:41
+    Author     : HP
+*/
+*{
+    font-family: 'Baloo Da 2', cursive;
+ 
+}
+
+
+
+.col{
+    margin-top: 20vh;
+}
+
+.col span{
+    color: #007bff;  
+}
+.header-top{
+    background: url(../resources/images/header.jpg) no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+
+}
+
+.header-foot .col-md-7{
+    background: url(../resources/images/hey1.jpg) no-repeat center;
+    background-size: cover;
+    height: 80vh;
+
+}
+.header-foot .rowum:hover.rgba-cyan-strong{
+    border-radius: 20px;
+}
+
+.col-md-5 .row{
+    padding:3rem;
+}
+
+
+.col-md-5 .rowum{
+    background: url(../resources/images/indir.png) no-repeat;
+    background-size: cover;
+    height: 50vh;
+    
+}
+
+.col-md-5 .rowum:hover.rgba-cyan-strong{
+    
+}
+.col-md-5 .h2{
+    font-weight: 400;
+    
+}
+.content-top .col-md-7 {
+    background: url(../resources/images/Untitled-3.jpg) no-repeat;
+    height: 100vh;
+}
+.content-top .col-md-5 .myrow{
+    background:url(../resources/images/Untitled-4.jpg) no-repeat;
+  
+    height:40vh;
+}
+.content-top .col-md-5 .myrow:hover.rgba-black-light{
+    border-radius: 30px;
+  
+}
+
+
+
+/* FİXED */
+#ceo .card{
+    border:none;
+    opacity:0.7;
+    transition: all 0.5s ease;
+    cursor: pointer;
+    width: 250px;
+    height: 400px;
+  
+}
+
+#ceo .card:hover{
+    opacity: 1;
+}
+#ceo .p-3{
+    font-size: 30px;
+}
+
+#whatwedo{
+
+       background:linear-gradient (
+           rgba (0,0,0,.7),
+           rgba (0,0,0,.7)
+           ),
+           url(../images/mdaolheader.jpg);
+}
+
+
+/* CAROUSEL */
+
+#carousel .carousel-item{
+    width: 1550px;
+    height: 600px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+        
+}
+
+#carousel .carousel-caption{
+    margin-bottom: 210px;
+}
+
+#carousel .quote{
+    color: rgba(24,134,199, .6);
+    font-size: 30px;
+}
+
+#carousel .blockquote{
+    font-size: 30px;
+}
