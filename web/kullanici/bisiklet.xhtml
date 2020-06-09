@@ -23,22 +23,17 @@
         <h:form id="mybikecontent"> 
             <div class="container mb-0 mt-3 text-center">
                 <p class="header-p"><i class="fas fa-quote-left"></i>Birbirinden Güzel Deneyimleriniz İçin..
-                </p>
-                <pre>Page #{bisikletController.page} of #{bisikletController.pageCount}</pre>
-                <div class="btn-group">
-                        <h:commandButton action="#{bisikletController.previous()}" value="Previous" styleClass="btn btn-outline-dark"/>
-                        <h:commandButton action="#{bisikletController.next()}" value="Next" styleClass="btn btn-outline-dark"/>
-                </div>
+                </p>               
                 <div class="row">
                     <ui:repeat value="#{bisikletController.bisikletList}" var="bisiklet">
                         <div id="bisiklet" class="col-md-3 mb-5">
                             <div class="card text-center card-cascade wider reverse">
                                 <div class="card-header">Bisiklet</div>
                                 <div class="view view-cascade overlay mb-3">
-                                    <img class="card-img-top" src="../resources/images/indir.jpg"/>
+                                    <img class="card-img-top" src="../resources/images/bisiklet.png"/>
                                     <h:outputText value="Ücret"/> <h3 class="">#{bisiklet.ucret}<i class="fas fa-lira-sign"></i></h3>
 
-                                </div>
+                                </div>                               
                                 <div class="card-body">
                                     <h:outputText value="#{bisiklet.marka}"/>
                                 </div>
@@ -46,7 +41,13 @@
                                 <div class="card-body">
                                     <h:outputText value="#{bisiklet.model}"/>
                                 </div>
-                                   <hr></hr>
+                                <hr></hr>
+                                <div class="card-body">
+                                    <ui:repeat value="#{bisikletController.getKategoriById(bisiklet)}" var="kate">
+                                        <h:outputText value="#{kate.kategori_ad}"/><br/>
+                                    </ui:repeat>                      
+                                </div>
+                                <hr></hr>
                                 <p class="card-text text-muted">
                                     <em>Sağlık İçin Sür</em></p>
 
@@ -70,6 +71,12 @@
 
                     </ui:repeat>>
 
+                    <div class="container">
+                        <h:commandButton action="#{bisikletController.previous()}" value="Previous" styleClass="btn btn-outline-dark"/>
+                        <h:commandButton action="#{bisikletController.next()}" value="Next" styleClass="btn btn-outline-dark"/>
+                         <pre>Page #{bisikletController.page} of #{bisikletController.pageCount}</pre>
+                    </div>
+                   
                 </div>
 
             </div>
@@ -111,7 +118,7 @@
                                 </h:selectOneMenu>
                             </div>
                             <div class="card-header text-muted">
-                                <p><em>Sizin Kullanım Süresince Gelen Zararlardan Kullanıcı Sorumludur..</em></p>
+                                <p><em>Kullanım Süresince Oluşan Zararlardan Kullanıcı Sorumludur..</em></p>
                             </div>
 
                         </div>

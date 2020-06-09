@@ -12,22 +12,18 @@
 
     <ui:define name="header-top">
 
-        <!-- Biisklet ve Kullanıcıları -->
+        <!-- Bisklet ve Kullanıcıları -->
         <section id="adminbike">
             <h:form>
                 <div class="row">
-                    <pre>   Page #{bisikletController.page} of #{bisikletController.pageCount}</pre>
-                    <div class="btn-group">
-                        <h:commandButton action="#{bisikletController.previous()}" value="Previous" styleClass="btn btn-outline-dark"/>
-                        <h:commandButton action="#{bisikletController.next()}" value="Next" styleClass="btn btn-outline-dark"/>
-                    </div>
                     <div class="col-md-6 text-center mx-auto mb-3">
-                        <h:commandButton onclick="$('#myaddmodal').modal('show')" class="btn btn-primary" value="Bisiklet Ekle">
+                        <h:commandButton onclick="$('#myaddmodal').modal('show')" class="btn btn-primary mt-4 mr-5" value="Bisiklet Ekle">
                             <f:ajax execute="@this"/>
                         </h:commandButton>
                     </div>
                 </div>
             </h:form>
+            <!-- Bisiklet ekleme Modal-->
             <div id="myaddmodal" class="modal" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
                     <h:form id="add-modal">
@@ -53,6 +49,14 @@
                                     <h:inputText class="form-control" value="#{bisikletController.bisiklet.ucret}"/>
                                 </div>
                                 <div class="p-1">
+                                    <p>Kategori Seçiniz</p>
+                                    <h:selectManyMenu value="#{bisikletController.bisiklet.kategoriList}" class="custom-select" converter="kategoriConverter" >
+
+                                        <f:selectItems value="#{bisikletController.kategoriler}" var="kategori" itemValue="#{kategori}"  itemLabel="#{kategori.kategori_ad}"/>
+
+                                    </h:selectManyMenu>
+                                </div>
+                                <div class="p-1">
                                     <p>Kullanıcı Seçiniz</p>
                                     <h:selectOneMenu value="#{bisikletController.bisiklet.kullanici}" class="custom-select" converter="kullaniciConverter">
 
@@ -64,8 +68,7 @@
                             </div>
 
                             <div class="modal-footer">
-
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
                                 <h:commandButton onclick="$('#myaddmodal').modal('hide')" value="Ekle" action="#{bisikletController.create()}" class="btn btn-primary">
                                     <f:ajax execute="add-modal @this" render="add-modal bike-list"/> <!-- ÖNCE ADDMODALI FORMU ÇALIŞTIR ÇOK ÖENMLİ YOKSA NULL POİNTER -->
                                 </h:commandButton>
@@ -81,8 +84,23 @@
 
             <!-- BİSİKLET KARTLARI -->
             <h:form id="bike-list">
+                
+                    <div class="container">
+                        <div class="col-md-4 mx-auto">
+                
+                        <h:commandButton action="#{bisikletController.previous()}" value="Previous" styleClass="btn btn-outline-dark"/>
+                        <h:commandButton action="#{bisikletController.next()}" value="Next" styleClass="btn btn-outline-dark"/>
+                        <div class=" col-md-6 mx-auto">
+                 
+                        <pre>Page #{bisikletController.page} of #{bisikletController.pageCount}</pre>
+                                               
+                        </div>
+                        </div>
+                    </div>
 
                 <div class="row my-auto">
+                    
+                 
 
                     <c:forEach items="#{bisikletController.bisikletList}" var="bisiklet">
                         <div class="col-md-2 mt-2">
@@ -94,8 +112,8 @@
 
                                 <!-- Card image -->
                                 <div class="view view-cascade overlay text-center">
-                                    <img class="card-img-top" src="../resources/images/bicycle.png"
-                                         alt="Card image cap" style="width: 200px;"/>
+                                    <img class="card-img-top" src="../resources/images/adminBisiklet.png"
+                                         alt="Card image cap" style="width: 225px;"/>
 
                                 </div>
 
@@ -112,18 +130,23 @@
                                     <div class="pb-1">
                                         <h:outputText value="#{bisiklet.model}"></h:outputText>
                                     </div>
-
+                                    <em class="text-muted">Kategoriler</em>
+                                    <div class="pb-1">
+                                        <ui:repeat value="#{bisikletController.getKategoriById(bisiklet)}" var="bike">
+                                            <h:outputText value="#{bike.kategori_ad}"/>
+                                        </ui:repeat>
+                                    </div>
+                                    <em class="text-muted">Günlük Ucret</em>
+                                    <div class="pb-1">
+                                        <h:outputText value="#{bisiklet.ucret}"></h:outputText>
+                                    </div>
                                     <em class="text-muted">Kullanıcı Adı</em>
                                     <div class="pb-1">
                                         <h:outputText rendered="#{bisiklet.kullanici.kullanici_id!=1}" value="#{bisiklet.kullanici.name}"></h:outputText>
-                                        <h:outputText rendered="#{bisiklet.kullanici.kullanici_id==1}" value="Kullanici Yok"></h:outputText>
+                                        <h:outputText rendered="#{bisiklet.kullanici.kullanici_id==1}" value="Kullanıcısı Yok"></h:outputText>
                                     </div>
 
-                                    <em class="text-muted">Kullanıcı Soyadı</em>
-                                    <div class="pb-1 text-center">
-                                        <h:outputText rendered="#{bisiklet.kullanici.kullanici_id!=1}" value="#{bisiklet.kullanici.surname}"></h:outputText>
-                                        <h:outputText rendered="#{bisiklet.kullanici.kullanici_id==1}" value="Kullanici Yok" style="padding-bottom: 15px;" ></h:outputText>
-                                    </div>
+
                                 </div>
 
                                 <!-- Card footer -->
@@ -142,13 +165,15 @@
                         </div>
 
                     </c:forEach>
+
+                   
                 </div>
             </h:form>
 
             <!--MY MODAL DELETE -->
 
-            <div id="modal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
+            <div id="modal" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
                     <h:form id="modal-panel">
                         <h:panelGroup class="modal-content" layout="block">
 
@@ -156,7 +181,7 @@
                             <div class="modal-body">
 
                                 <div id="view-overlay" class="view overlay text-center">
-                                    <img class="card-img-top" src="../resources/images/bicycle.png" alt="Card image cap" style="width: 50vh; height: 50vh"/>
+                                    <img class="card-img-top" src="../resources/images/adminBisiklet.png" alt="Card image cap" style="width: 48vh; height: 30vh"/>
                                     <a>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
@@ -171,7 +196,7 @@
                                     <div class="pb-1">
                                         <h:outputText value="#{bisikletController.bisiklet.model}"/> 
                                     </div>
-                                    <em class="text-muted">Ücret</em>
+                                    <em class="text-muted">Günlük Ücret</em>
                                     <div class="pb-1">
                                         <h:outputText value="#{bisikletController.bisiklet.ucret}"/> 
                                     </div>
@@ -181,14 +206,12 @@
                                     </div>
                                 </div>
 
-                                <div class="card-header text-muted">
-                                    <p><em>Silme işlemi.</em></p>
-                                </div>
+
 
                             </div>
                             <div class="modal-footer rounded-bottom mdb-color lighten-3 text-center pt-3">
 
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
                                 <h:commandButton onclick="$('.modal').modal('hide')" action="#{bisikletController.delete()}" value="Sil" class="btn btn-primary">
                                     <f:ajax execute="@this" render="bike-list"/>
                                 </h:commandButton>
@@ -201,8 +224,8 @@
 
             </div>
             <!-- Update Bike My modal-->
-            <div id="updatebikemodal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
+            <div id="updatebikemodal" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
                     <h:form id="modalbike-panel">
                         <h:panelGroup class="modal-content" layout="block">
 
@@ -210,7 +233,7 @@
                             <div class="modal-body">
 
                                 <div id="view-overlay" class="view overlay text-center">
-                                    <img class="card-img-top" src="../resources/images/bicycle.png" alt="Card image cap" style="width: 50vh; height: 50vh"/>
+                                    <img class="card-img-top" src="../resources/images/adminBisiklet.png" alt="Card image cap" style="width: 48vh; height: 30vh"/>
                                     <a>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
@@ -225,7 +248,7 @@
                                     <div class="pb-1">
                                         <h:inputText class="form-control" value="#{bisikletController.bisiklet.model}"/>
                                     </div>
-                                    <em class="text-muted">Ücret</em>
+                                    <em class="text-muted">Günlük Ücret</em>
                                     <div class="pb-1">
                                         <h:inputText class="form-control" value="#{bisikletController.bisiklet.ucret}"/>
                                     </div>
@@ -242,7 +265,7 @@
                             </div>
                             <div class="modal-footer rounded-bottom mdb-color lighten-3 text-center pt-3">
 
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
                                 <h:commandButton onclick="$('.modal').modal('hide')" action="#{bisikletController.update()}" value="Güncelle" class="btn btn-primary">
                                     <f:ajax execute="modalbike-panel @this" render="bike-list"/>
                                 </h:commandButton>

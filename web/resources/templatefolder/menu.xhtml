@@ -1,7 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <h:outputStylesheet library="css" name="menu.css"/>
     </h:head>
@@ -15,7 +16,7 @@
                     </button>
                     <div class="row">
                         <h:commandLink class="navbar-brand" action="/index?faces-redirect=true" >
-                            <img src="https://mdbootstrap.com/img/logo/mdb-transparent.png" height="30" alt="mdb logo"/>
+                            <img src="https://i.hizliresim.com/MSxJB6.png" height="60" alt="TWO WHEELS"/>
                         </h:commandLink>
 
 
@@ -24,39 +25,59 @@
 
                 <div class="collapse navbar-collapse" id="nvbCollapse">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <h:commandLink class="nav-link" value="Login" action="/Login?faces-redirect=true" />
-                        </li>
+                        <c:if test="#{kullaniciController.kullanicifilter==null}">
+                            <li class="nav-item">
+                                <h:commandLink  class="nav-link" value="Login" action="/Login?faces-redirect=true" />
+                            </li>
+                        </c:if>
+                        <c:if test="#{kullaniciController.kullanicifilter!=null}">
+                            <li class="nav-item">
+                                <h:commandLink  class="nav-link" value="Logout" action="/logout?faces-redirect=true" />
+                            </li>
+                        </c:if>
+
                         <li class="nav-item">
                             <h:commandLink class="nav-link" value="Bisiklet" action="/kullanici/bisiklet?faces-redirect=true" />
                         </li>
                         <li class="nav-item">
                             <h:commandLink class="nav-link" value="Motor" action="/kullanici/motor?faces-redirect=true" />
-                        </li>
+                        </li> 
                         <li class="nav-item">
                             <h:commandLink class="nav-link" value="Atv" action="/kullanici/atv?faces-redirect=true" />
                         </li>
-                        
-                        
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" 
-                               aria-haspopup="true" aria-expanded="false">
-                                Admin Panel
-                            </a>
-                            <div class="dropdown-menu small" aria-labelledby="navbarDropdown1">
-                               <h:commandLink class="dropdown-item" value="Kullanici" action="/admin/adminkullanici?faces-redirect=true" />
-                                <div class="dropdown-divider"></div>
-                                <h:commandLink class="dropdown-item" value="Bisiklet" action="/admin/adminbisiklet?faces-redirect=true" />
-                                <h:commandLink class="dropdown-item" value="Atv" action="/kullanici/bisiklet?faces-redirect=true" />
-                                <h:commandLink class="dropdown-item" value="Motor" action="/kullanici/bisiklet?faces-redirect=true" />
-                            </div>
-
-
+                        <li class="nav-item">
+                            <h:commandLink class="nav-link" value="Scooter" action="/kullanici/scooter?faces-redirect=true" />
                         </li>
+                        <li class="nav-item">
+                            <h:commandLink class="nav-link" value="Hoverboard" action="/kullanici/hoverboard?faces-redirect=true" />
+                        </li>
+                        <li class="nav-item">
+                            <h:commandLink class="nav-link" value="Gınger" action="/kullanici/ginger?faces-redirect=true" />
+                        </li>
+                        <c:if test="#{kullaniciController.kullanicifilter.role==1}">
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" 
+                                   aria-haspopup="true" aria-expanded="false">
+                                    Admin Panel
+                                </a>
+                                <div class="dropdown-menu small" aria-labelledby="navbarDropdown1">
+                                    <h:commandLink class="dropdown-item" value="Kullanici" action="/admin/adminkullanici?faces-redirect=true" />
+                                    <div class="dropdown-divider"></div>
+                                    <h:commandLink class="dropdown-item" value="Bisiklet" action="/admin/adminbisiklet?faces-redirect=true" />
+                                    <h:commandLink class="dropdown-item" value="Atv" action="/admin/adminatv?faces-redirect=true" />
+                                    <h:commandLink class="dropdown-item" value="Motor" action="/admin/adminmotor?faces-redirect=true" />
+                                    <h:commandLink class="dropdown-item" value="Scooter" action="/admin/adminscooter?faces-redirect=true"/>
+                                    <h:commandLink class="dropdown-item" value="Hoverboard" action="/admin/adminhoverboard?faces-redirect=true"/>
+                                    <h:commandLink class="dropdown-item" value="Ginger" action="/admin/adminginger?faces-redirect=true"/>
+                                    <h:commandLink class="dropdown-item" value="Documents" action="/document/document?faces-redirect=true" />
+                                </div>
+                            </li>
+                        </c:if>
                     </ul>
                 </div>
                 <div class="info">
-                <h:outputText class="navbar-brand  ml-3 mr-1" value="#{kullaniciController.kullanicifilter.name}"/>
+                    <h:outputText class="navbar-brand  ml-3 mr-1" value="#{kullaniciController.kullanicifilter.name}"/>
                 </div>
             </nav>
 

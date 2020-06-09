@@ -1,12 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controller;
 
 import Database.BisikletDAO;
+import Database.KategoriDAO;
 import Entity.Bisiklet;
+import Entity.Kategori;
 import Entity.Kullanici;
 import java.io.Serializable;
 import java.util.List;
@@ -14,11 +11,6 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-
-/**
- *
- * @author HP
- */
 @Named
 @SessionScoped
 public class BisikletController implements Serializable {
@@ -26,31 +18,33 @@ public class BisikletController implements Serializable {
     private Bisiklet bisiklet;
     private BisikletDAO bisikletdao;
     private Kullanici kiralayan;
+    private KategoriDAO kategoriDAO;
     @Inject
     KullaniciController kullanicicontroller;
 
-    private final int admin = 1; //Rol vermek için yetkilendirme
+    private final int admin = 1;
     private final int guest = 0;
-    
-    private int gun; //Fiyat Hesabı İçin
-    //NET ÜCRET HESAPLANACAK
-    
-    private int page=1;
-    private int pageSize=12;
+
+    private int gun;
+
+    private int page = 1;
+    private int pageSize = 12;
     private int pageCount;
-    
-    public void next(){
-        if(this.page==this.getPageCount())
-            this.page=1;
-        else
+
+    public void next() {
+        if (this.page == this.getPageCount()) {
+            this.page = 1;
+        } else {
             this.page++;
+        }
     }
-    
-    public void previous(){
-        if(this.page==1)
-            this.page=this.getPageCount();
-        else
+
+    public void previous() {
+        if (this.page == 1) {
+            this.page = this.getPageCount();
+        } else {
             this.page--;
+        }
     }
 
     public int getPage() {
@@ -70,52 +64,53 @@ public class BisikletController implements Serializable {
     }
 
     public int getPageCount() {
-        this.pageCount=(int)Math.ceil(this.getBisikletdao().count()/(double)pageSize);
+        this.pageCount = (int) Math.ceil(this.getBisikletdao().count() / (double) pageSize);
         return pageCount;
     }
 
     public void setPageCount(int pageCount) {
         this.pageCount = pageCount;
     }
-    
-    
-    public String netUcret()
-    {
-        int a=this.bisiklet.getUcret();
-        int b=gun*a;
+
+    public String netUcret() {
+        int a = this.bisiklet.getUcret();
+        int b = gun * a;
         return String.valueOf(b);
     }
-    
 
-    public void bisikletata(Bisiklet bisiklet)
-    {  
-        this.bisiklet=bisiklet;
-        
+    public void bisikletata(Bisiklet bisiklet) {
+        this.bisiklet = bisiklet;
+
     }
-    
+
     public void clearForm() {
         this.bisiklet = new Bisiklet();
     }
 
-
     public void delete() {
         this.getBisikletdao().delete(bisiklet);
+
         clearForm();
     }
 
     public void create() {
-    
-        this.getBisikletdao().create(bisiklet);
-        clearForm();
 
+        this.getBisikletdao().create(this.bisiklet);
+        clearForm();
     }
-    
-    public void update(){
+
+    public void update() {
         this.getBisikletdao().update(bisiklet);
         clearForm();
     }
-           
-  
+
+    public List<Kategori> getKategoriById(Bisiklet bike) {
+        return getKategoriDAO().getBisikletListByKategori(bike.getBisiklet_id());
+    }
+
+    public List<Kategori> getKategoriler() {
+        return this.getKategoriDAO().tumKategoriler();
+    }
 
     public void iadeEt(Bisiklet bisiklet) {
         this.setKiralayan(this.getKullanicicontroller().getKullanicifilter());
@@ -149,7 +144,7 @@ public class BisikletController implements Serializable {
     }
 
     public List<Bisiklet> getBisikletList() {
-        return this.getBisikletdao().getBisikletList(page,pageSize);
+        return this.getBisikletdao().getBisikletList(page, pageSize);
     }
 
     public Bisiklet getBisiklet() {
@@ -193,14 +188,15 @@ public class BisikletController implements Serializable {
         this.gun = gun;
     }
 
+    public KategoriDAO getKategoriDAO() {
+        if (kategoriDAO == null) {
+            kategoriDAO = new KategoriDAO();
+        }
+        return kategoriDAO;
+    }
 
+    public void setKategoriDAO(KategoriDAO kategoriDAO) {
+        this.kategoriDAO = kategoriDAO;
+    }
 
-
-    
-
-    
-    
 }
-
-
-

@@ -5,22 +5,27 @@
  */
 package Entity;
 
-
+import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
-/**
- *
- * @author HP
- */
-public class Bisiklet {
+public class Bisiklet implements Serializable {
+
     private Long bisiklet_id;
     private String marka;
     private String model;
     private int ucret;
     private Kullanici kullanici;
-  
-    
-    
+    private List<Kategori> kategoriList;
+
+    public List<Kategori> getKategoriList() {
+        return kategoriList;
+    }
+
+    public void setKategoriList(List<Kategori> kategoriList) {
+        this.kategoriList = kategoriList;
+    }
+
     public Long getBisiklet_id() {
         return bisiklet_id;
     }
@@ -60,8 +65,6 @@ public class Bisiklet {
     public void setUcret(int ucret) {
         this.ucret = ucret;
     }
-    
-    
 
     @Override
     public int hashCode() {
@@ -88,8 +91,4 @@ public class Bisiklet {
         return true;
     }
 
-
-   
-    
-    
 }
