@@ -1,8 +1,13 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Converter;
 
 /**
  *
- * @author Talha Yılmaz
+ * @author 90549
  */
 import Database.MotorDAO;
 import Entity.Motor;
@@ -11,29 +16,30 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-@FacesConverter(value = "motorConverter")
+@FacesConverter(value ="motorConverter")
 public class MotorConverter implements Converter {
 
-    public MotorDAO motorDAO;
+    public MotorDAO motordao;
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        return this.getMotorDAO().find(Long.valueOf(value));
+        return this.getMotordao().find(Long.valueOf(value));
 
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
         Motor b = (Motor) value;
-        return b.getId().toString();
+        return b.getMotor_id().toString();
 
     }
 
-    public MotorDAO getMotorDAO() {
-        if (this.motorDAO == null) {
-            this.motorDAO = new MotorDAO();
+    public MotorDAO getMotordao() {
+        if (this.motordao == null) {
+            this.motordao = new MotorDAO();
         }
-        return motorDAO;
+        return motordao;
     }
 
 }
+
