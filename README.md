@@ -1,8 +1,8 @@
 # bisikletkiralama
-İnternet Programcılığı Dönem Projesi
-Grup Üyeleri					Github commit isimleri   	Github Kullanıcı Adları
+İnternet Programcılığı Dönem Projesi;
+Grup Üyeleri					Github commit isimleri   	Github Kullanıcı Adları;
 
-1-)Muhammed Talha YILMAZ  : 02170201062  	Talha Yılmaz 			mty-c
+1-)Muhammed Talha YILMAZ  : 02170201062  	Talha Yılmaz 			mty-c;
 2-)Selahattin YILDIRIM : 02180201061		DazlakGandalf			SelahattinYildirim1
 3-)Ahmet İkbal KAYMAZ : 02180201048		Misafir				ahmetikbalkaymaz
 4-)Hüseyin ALTIKULAÇ : 02180001501		HuseyinAltikulac		HuseyinAltikulac
