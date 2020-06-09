@@ -1,0 +1,25 @@
+
+#adminscooter{
+    margin-top: 5rem;
+}
+#adminscooter .card-body{
+    font-size: 20px;
+    
+}
+
+
+
+#scooter-list .card{
+    border:none;
+    opacity:0.8;
+    transition: 0.8s ease;
+   
+}
+
+#scooter-list .card:hover{
+    opacity:1;
+}
+
+#scooter-list .card-header{
+    background-color: #c4e986;
+}
