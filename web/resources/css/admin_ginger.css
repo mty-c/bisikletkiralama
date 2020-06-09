@@ -1,0 +1,26 @@
+
+#adminginger{
+    margin-top: 5rem;
+}
+#adminginger .card-body{
+    font-size: 20px;
+    
+}
+
+
+
+#ginger-list .card{
+    border:none;
+    opacity:0.8;
+    transition: 0.8s ease;
+   
+}
+
+#ginger-list .card:hover{
+    opacity:1;
+}
+
+#ginger-list .card-header{
+    background-color: #c4e986;
+}
+
