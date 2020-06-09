@@ -6,6 +6,7 @@
     xmlns:f="http://xmlns.jcp.org/jsf/core"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     template="template.xhtml"
+    xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
     xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:define name="title">Login</ui:define>
@@ -17,7 +18,7 @@
                     <div class="mycard">
                         <div class="card-header">
                             <h3>Sign In</h3>
-                       
+
                         </div>
                         <div class="card-body">
 
@@ -34,12 +35,12 @@
                                 <h:inputSecret class="form-control" value="#{kullaniciController.kullanici.pass}"/>
 
                             </div>
-                            <h:commandButton class="btn float-right login_btn mb-5" value="Login" action="#{kullaniciController.login()}"/>
+                            <h:commandButton class="btn float-right login_btn mb-5 p-4" value="Login" action="#{kullaniciController.login()}"/>
                         </div>
                         <div class="card-footer  mt-5" >
                             <div class="d-flex justify-content-center links">
-                                <p><em>Don t Have A Account</em></p>
-                                <a href="" class="btn btn-default btn-rounded mb-2" data-toggle="modal" data-target="#modalLoginForm">Sign Up
+                                <p class="mb-2"><em>Don t Have A Account</em></p>
+                                <a href="" class="btn btn-default mt-5 mr-5 p-3"  data-toggle="modal" data-target="#modalLoginForm">Sign Up
                                 </a>
 
                             </div>
@@ -48,14 +49,14 @@
                     </div>
                 </div>
             </h:form>
-
             <h:form id="register-form">
+                <h:messages styleClass="alert alert-danger alert" />
                 <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                      aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header text-center">
-                                <h4 class="modal-title w-100 font-weight-bold">Sign in</h4>
+                                <h4 class="modal-title w-100 font-weight-bold">Sign Up</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -63,31 +64,25 @@
                             <div class="modal-body mx-3">
                                 <div class="md-form mb-5">
                                     <i class="fas fa-user prefix grey-text"></i>
-                                    <h:inputText class="form-control validate" value="#{kullaniciController.kullanici.name}"/>
-                                    <label data-error="wrong" data-success="right" for="defaultForm-email">Name</label>
-                                </div>
+                                    <h:inputText a:placeholder="Name" class="form-control validate" value="#{kullaniciController.kullanici.name}" validator="#{kullanicivalidator.validateAd}"/>
 
+                                </div>
+                                <div class="md-form mb-4">
+                                    <i class="fas fa-user prefix grey-text"></i>
+                                    <h:inputText a:placeholder="Surname" class="form-control validate" value="#{kullaniciController.kullanici.surname}" validator="#{kullanicivalidator.validateSoyad}"/>
+
+                                </div>
                                 <div class="md-form mb-4">
                                     <i class="fas fa-lock prefix grey-text"></i>
-                                    <h:inputText class="form-control validate" value="#{kullaniciController.kullanici.pass}"/>
-                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Password</label>
-                                </div>
+                                    <h:inputText a:placeholder="Password" class="form-control validate" value="#{kullaniciController.kullanici.pass}" validator="#{kullanicivalidator.validateSifre}"/>
 
-                                <div class="md-form mb-4">
-                                    <i class="fas fa-user prefix grey-text"></i>
-                                    <h:inputText class="form-control validate" value="#{kullaniciController.kullanici.surname}"/>
-                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Surname</label>
                                 </div>
-
-                                <div class="md-form mb-4">
-                                    <i class="fas fa-user prefix grey-text"></i>
-                                    <h:selectOneMenu styleClass="custom-select" id="selectGender" value="#{kullaniciController.kullanici.gender}"><br/>
+                                <div class="md-form mb-4">                             
+                                    <h:selectOneMenu styleClass="custom-select" id="selectGender" value="#{kullaniciController.kullanici.gender}" ><br/>
                                         <f:selectItem itemLabel="Erkek" itemValue="true"/>
-                                        <f:selectItem itemLabel="Bayan" itemValue="false"/>
-                                    </h:selectOneMenu>
-                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Gender</label>
+                                        <f:selectItem itemLabel="Kadın" itemValue="false"/>
+                                    </h:selectOneMenu>                         
                                 </div>
-
                             </div>
                             <div class="modal-footer d-flex justify-content-center">
                                 <h:commandButton onclick="$('.modal').modal('hide')" class="btn btn-outline-info" value="Register" action="#{kullaniciController.register()}">
@@ -98,11 +93,6 @@
                     </div>
                 </div>
             </h:form>
-
         </div>        
     </ui:define>
-    
-
-
-
 </ui:composition>
