@@ -1,0 +1,56 @@
+
+
+#mybikecontent{
+    background-color: #EEEEEE;
+}
+
+.usthr{
+     border-bottom: #e9ecef 4px solid;
+}
+#mybikecontent .card{
+    background-color: #98c3c0;
+}
+
+
+.card hr{
+    border-bottom: #e9ecef 1px solid;
+}
+
+.header-p{
+    font-size: 30px;
+    color: #9fcdff;
+    transition: 0.5s ease;
+}
+.header-p:hover{
+    font-size: 35px;
+}
+
+.card-body{
+    padding: 2px;
+}
+#motor .card{
+    border:none;
+    cursor:pointer;
+   transition: all 0.8s ease;
+    
+}
+
+
+#motor .card:hover{
+    background-color: #e9ecef;
+    width: 280px;
+    height:550px;
+    
+}
+#view-overlay{
+    opacity: 0.5;
+    transition: all 0.5s ease;
+}
+
+#view-overlay:hover{
+    opacity:1;
+}
+
+#markamodel{
+    font-size: 30px;
+}

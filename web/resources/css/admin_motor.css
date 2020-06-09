@@ -1,0 +1,26 @@
+
+
+#adminmotor{
+    margin-top: 5rem;
+}
+#adminmotor .card-body{
+    font-size: 20px;
+    
+}
+
+
+
+#motor-list .card{
+    border:none;
+    opacity:0.8;
+    transition: 0.8s ease;
+   
+}
+
+#motor-list .card:hover{
+    opacity:1;
+}
+
+#motor-list .card-header{
+    background-color: #c4e986;
+}
