@@ -1,69 +1,117 @@
-
 package Controller;
 
 import Database.AtvDAO;
-import Entity.Kullanici;
+import Database.KategoriDAO;
 import Entity.Atv;
+import Entity.Kategori;
+import Entity.Kullanici;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-
 @Named
 @SessionScoped
 public class AtvController implements Serializable {
+
     private Atv atv;
-    private AtvDAO atvdao;
+    private AtvDAO atvDAO;
     private Kullanici kiralayan;
+    private KategoriDAO kategoriDAO;
     @Inject
     KullaniciController kullanicicontroller;
 
-    
-    private int gun; 
-    
+    private final int admin = 1; //Rol vermek için yetkilendirme
+    private final int guest = 0;
 
-    public List<Atv> getAtvList() {
-        return this.getAtvdao().getAtvList();
+    private int gun; //Fiyat Hesabı İçin
+    //NET ÜCRET HESAPLANACAK
+
+    private int page = 1;
+    private int pageSize = 12;
+    private int pageCount;
+
+    public void next() {
+        if (this.page == this.getPageCount()) {
+            this.page = 1;
+        } else {
+            this.page++;
+        }
     }
-    
-    public String netUcret()
-    {
-        int a=this.getAtv().getUcret();
-        int b=gun*a;
+
+    public void previous() {
+        if (this.page == 1) {
+            this.page = this.getPageCount();
+        } else {
+            this.page--;
+        }
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public int getPageCount() {
+        this.pageCount = (int) Math.ceil(this.getAtvdao().count() / (double) pageSize);
+        return pageCount;
+    }
+
+    public void setPageCount(int pageCount) {
+        this.pageCount = pageCount;
+    }
+
+    public String netUcret() {
+        int a = this.atv.getUcret();
+        int b = gun * a;
         return String.valueOf(b);
     }
-    
 
-    public void atvAta(Atv atv)
-    {  
-        this.atv=atv;
-        
+    public void atvata(Atv atv) {
+        this.atv = atv;
+
     }
-    
+
     public void clearForm() {
         this.atv = new Atv();
     }
 
-
     public void delete() {
         this.getAtvdao().delete(atv);
+
         clearForm();
     }
 
     public void create() {
-    
-        this.getAtvdao().create(atv);
-        clearForm();
 
+        this.getAtvdao().create(this.atv);
+        clearForm();
     }
-    
-    public void update(){
+
+    public void update() {
         this.getAtvdao().update(atv);
         clearForm();
     }
-  
+
+    public List<Kategori> getKategoriById(Atv atv) {
+        return getKategoriDAO().getAtvListByKategori(atv.getAtv_id());
+    }
+
+    public List<Kategori> getKategoriler() {
+        return this.getKategoriDAO().tumKategoriler();
+    }
 
     public void iadeEt(Atv atv) {
         this.setKiralayan(this.getKullanicicontroller().getKullanicifilter());
@@ -88,9 +136,22 @@ public class AtvController implements Serializable {
         this.kiralayan = kiralayan;
     }
 
+    public int getAdmin() {
+        return admin;
+    }
+
+    public int getGuest() {
+        return guest;
+    }
+
+    public List<Atv> getAtvList() {
+        return this.getAtvdao().getAtvList(page, pageSize);
+    }
+
     public Atv getAtv() {
-        if(this.atv==null)
-            this.atv=new Atv();
+        if (this.atv == null) {
+            this.atv = new Atv();
+        }
         return atv;
     }
 
@@ -99,16 +160,15 @@ public class AtvController implements Serializable {
     }
 
     public AtvDAO getAtvdao() {
-        if(this.atvdao==null)
-            this.atvdao=new AtvDAO();
-        return atvdao;
+        if (this.atvDAO == null) {
+            this.atvDAO = new AtvDAO();
+        }
+        return atvDAO;
     }
 
     public void setAtvdao(AtvDAO atvdao) {
-        this.atvdao = atvdao;
+        this.atvDAO = atvdao;
     }
-
- 
 
     public KullaniciController getKullanicicontroller() {
         if (this.kullanicicontroller == null) {
@@ -129,8 +189,15 @@ public class AtvController implements Serializable {
         this.gun = gun;
     }
 
+    public KategoriDAO getKategoriDAO() {
+        if (kategoriDAO == null) {
+            kategoriDAO = new KategoriDAO();
+        }
+        return kategoriDAO;
+    }
 
+    public void setKategoriDAO(KategoriDAO kategoriDAO) {
+        this.kategoriDAO = kategoriDAO;
+    }
 
-
-    
 }

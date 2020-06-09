@@ -1,0 +1,303 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    template="../template.xhtml"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <ui:define name="title">ATV</ui:define>
+
+    <ui:define name="header-top">
+
+        <!-- Atv ve Kullanıcıları -->
+        <section id="adminatv">
+            <h:form>
+                <div class="row">
+
+                    <div class="col-md-6 text-center mx-auto mb-3">
+                        <h:commandButton onclick="$('#myaddmodal').modal('show')" class="btn btn-primary mt-4 mr-5" value="Atv Ekle">
+                            <f:ajax execute="@this"/>
+                        </h:commandButton>
+                    </div>
+                </div>
+            </h:form>
+
+            <!-- Bisiklet ekleme Modal-->
+            <div id="myaddmodal" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <h:form id="add-modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Ekleme İşlemi</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                <div class="p-1">
+                                    <p>Marka Giriniz</p>
+                                    <h:inputText class="form-control" value="#{atvController.atv.marka}"/>
+                                </div>
+                                <div class="p-1">
+                                    <p>Model Giriniz</p>
+                                    <h:inputText class="form-control" value="#{atvController.atv.model}"/>
+                                </div>
+                                <div class="p-1">
+                                    <p>Motor Hacmi Giriniz</p>
+                                    <h:inputText class="form-control" value="#{atvController.atv.motorhacmi}"/>
+                                </div>
+                                <div class="p-1">
+                                    <p>Ücret Giriniz</p>
+                                    <h:inputText class="form-control" value="#{atvController.atv.ucret}"/>
+                                </div>
+                                <div class="p-1">
+                                    <p>Kategori Seçiniz</p>
+                                    <h:selectManyMenu value="#{atvController.atv.kategoriList}" class="custom-select" converter="kategoriConverter" >
+
+                                        <f:selectItems value="#{atvController.kategoriler}" var="kategori" itemValue="#{kategori}"  itemLabel="#{kategori.kategori_ad}"/>
+
+                                    </h:selectManyMenu>
+                                </div>
+                                <div class="p-1">
+                                    <p>Kullanıcı Seçiniz</p>
+                                    <h:selectOneMenu value="#{atvController.atv.kullanici}" class="custom-select" converter="kullaniciConverter">
+
+                                        <f:selectItems value="#{kullaniciController.liste}" var="kullanici" itemValue="#{kullanici}" itemLabel="#{kullanici.name}"/>
+
+                                    </h:selectOneMenu>
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
+                                <h:commandButton onclick="$('#myaddmodal').modal('hide')" value="Ekle" action="#{atvController.create()}" class="btn btn-primary">
+                                    <f:ajax execute="add-modal @this" render="add-modal bike-list"/> <!-- ÖNCE ADDMODALI FORMU ÇALIŞTIR ÇOK ÖENMLİ YOKSA NULL POİNTER -->
+                                </h:commandButton>
+
+                            </div>
+                        </div>
+                    </h:form>
+
+                </div>
+            </div>
+
+
+
+            <!-- ATV KARTLARI -->
+            <h:form id="bike-list">
+                <div class="container">
+                    <div class="col-md-4 mx-auto">
+
+                        <h:commandButton action="#{atvController.previous()}" value="Previous" styleClass="btn btn-outline-dark"/>
+                        <h:commandButton action="#{atvController.next()}" value="Next" styleClass="btn btn-outline-dark"/>
+                        <div class=" col-md-6 mx-auto">
+
+                            <pre>Page #{atvController.page} of #{atvController.pageCount}</pre>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-auto">
+
+                    <c:forEach items="#{atvController.atvList}" var="atvv">
+                        <div class="col-md-2 mt-2">
+
+                            <div class="card bg-ligt mb-2 text-center mt-2">
+                                <div class="card-header text-center">
+                                    <p class="text-muted">Atv Bilgileri</p>
+                                </div>
+
+                                <!-- Card image -->
+                                <div class="view view-cascade overlay text-center">
+                                    <img class="card-img-top" src="../resources/images/adminatv.png"
+                                         alt="Card image cap" style="width: 240px;"/>
+
+                                </div>
+
+                                <!-- Card content -->
+                                <div class="card-body card-body-cascade text-center">
+
+                                    <!-- Label -->
+                                    <em class="text-muted">Marka</em>
+                                    <div class="pb-1">
+                                        <h:outputText value="#{atvv.marka}"><i class="fas fa-bicycle"></i></h:outputText>
+                                    </div>
+
+                                    <em class="text-muted">Model</em>
+                                    <div class="pb-1">
+                                        <h:outputText value="#{atvv.model}"></h:outputText>
+                                    </div>
+                                    <em class="text-muted">Motor Hacmi</em>
+                                    <div class="pb-1">
+                                        <h:outputText value="#{atvv.motorhacmi}"></h:outputText>
+                                    </div>
+                                    <em class="text-muted">Kategoriler</em>
+                                    <div class="pb-1">
+                                        <ui:repeat value="#{atvController.getKategoriById(atvv)}" var="atv">
+                                            <h:outputText value="#{atv.kategori_ad}"/>
+                                        </ui:repeat>
+                                    </div>
+                                    <em class="text-muted">Günlük Ücret</em>
+                                    <div class="pb-1">
+                                        <h:outputText value="#{atvv.ucret}"></h:outputText>
+                                    </div>
+                                    <em class="text-muted">Kullanıcı Adı</em>
+                                    <div class="pb-1">
+                                        <h:outputText rendered="#{atvv.kullanici.kullanici_id!=1}" value="#{atvv.kullanici.name}"></h:outputText>
+                                        <h:outputText rendered="#{atvv.kullanici.kullanici_id==1}" value="Kullanicisi Yok"></h:outputText>
+                                    </div>
+
+
+                                </div>
+
+                                <!-- Card footer -->
+                                <div class="card-footer text-muted text-center">
+                                    <div class="btn-group">
+                                        <h:commandButton onclick="$('#modal').modal('show')" value="Sil" class="btn btn-danger" action="#{atvController.atvata(atvv)}">
+                                            <f:ajax execute="@this" render="modal-panel"/>
+                                        </h:commandButton>
+                                        <h:commandButton onclick="$('#updatebikemodal').modal('show')" value="Güncelle" class="btn btn-secondary" action="#{atvController.atvata(atvv)}">
+                                            <f:ajax execute="@this" render="modalbike-panel"></f:ajax>
+                                        </h:commandButton>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </c:forEach>
+
+
+                </div>
+            </h:form>
+
+            <!--MY MODAL DELETE -->
+
+            <div id="modal" class="modal" tabindex="-1" role="dialog" >
+                <div class="modal-dialog" role="document">
+                    <h:form id="modal-panel">
+                        <h:panelGroup class="modal-content" layout="block">
+
+                            <div class="modal-header">Silinecek Ürün</div>
+                            <div class="modal-body">
+
+                                <div id="view-overlay" class="view overlay text-center">
+                                    <img class="card-img-top" src="../resources/images/adminatv.png" alt="Card image cap" style="width: 48vh; height: 30vh"/>
+                                    <a>
+                                        <div class="mask rgba-white-slight"></div>
+                                    </a>
+                                </div>
+
+                                <div id="markamodel" class="card-body card-body-cascade text-center my-auto">
+                                    <em class="text-muted">Marka</em>
+                                    <div class="pb-1">
+                                        <h:outputText value="#{atvController.atv.marka}"/> 
+                                    </div>
+                                    <em class="text-muted">Model</em>
+                                    <div class="pb-1">
+                                        <h:outputText value="#{atvController.atv.model}"/> 
+                                    </div>
+                                    <em class="text-muted">Motor Hacmi</em>
+                                    <div class="pb-1">
+                                        <h:outputText value="#{atvController.atv.motorhacmi}"/>
+                                    </div>
+                                    <em class="text-muted">Günlük Ücret</em>
+                                    <div class="pb-1">
+                                        <h:outputText value="#{atvController.atv.ucret}"/> 
+                                    </div>
+                                    <em class="text-muted">Kullanıcı Adı</em>
+                                    <div class="pb-1">
+                                        <h:outputText value="#{atvController.atv.kullanici.name}"/> 
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="modal-footer rounded-bottom mdb-color lighten-3 text-center pt-3">
+
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
+                                <h:commandButton onclick="$('.modal').modal('hide')" action="#{atvController.delete()}" value="Sil" class="btn btn-primary">
+                                    <f:ajax execute="@this" render="bike-list"/>
+                                </h:commandButton>
+
+                            </div>
+
+                        </h:panelGroup>
+                    </h:form>
+                </div>
+
+            </div>
+            <!-- Update Bike My modal-->
+            <div id="updatebikemodal" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <h:form id="modalbike-panel">
+                        <h:panelGroup class="modal-content" layout="block">
+
+                            <div class="modal-header">Güncellenecek Ürün</div>
+                            <div class="modal-body">
+
+                                <div id="view-overlay" class="view overlay text-center">
+                                    <img class="card-img-top" src="../resources/images/adminatv.png" alt="Card image cap" style="width: 48vh; height: 30vh"/>
+                                    <a>
+                                        <div class="mask rgba-white-slight"></div>
+                                    </a>
+                                </div>
+
+                                <div id="markamodel" class="card-body card-body-cascade text-center my-auto">
+                                    <em class="text-muted">Marka</em>
+                                    <div class="pb-1">
+                                        <h:inputText class="form-control" value="#{atvController.atv.marka}"/>
+                                    </div>
+                                    <em class="text-muted">Model</em>
+                                    <div class="pb-1">
+                                        <h:inputText class="form-control" value="#{atvController.atv.model}"/>
+                                    </div>
+                                    <em class="text-muted">Motor Hacmi</em>
+                                    <div class="pb-1">
+                                        <h:inputText class="form-control" value="#{atvController.atv.motorhacmi}"/>
+                                    </div>
+                                    <em class="text-muted">Günlük Ücret</em>
+                                    <div class="pb-1">
+                                        <h:inputText class="form-control" value="#{atvController.atv.ucret}"/>
+                                    </div>
+                                    <em class="text-muted">Kullanici Seçimi</em>
+                                    <div class="pb-1">
+                                        <h:selectOneMenu value="#{atvController.atv.kullanici}" class="custom-select" converter="kullaniciConverter">
+                                            <f:selectItems value="#{kullaniciController.liste}" var="kullanici" itemLabel="#{kullanici.name}" itemValue="#{kullanici}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div class="modal-footer rounded-bottom mdb-color lighten-3 text-center pt-3">
+
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
+                                <h:commandButton onclick="$('.modal').modal('hide')" action="#{atvController.update()}" value="Güncelle" class="btn btn-primary">
+                                    <f:ajax execute="modalbike-panel @this" render="bike-list"/>
+                                </h:commandButton>
+
+                            </div>
+
+                        </h:panelGroup>
+                    </h:form>
+                </div>
+
+            </div>
+
+
+
+        </section>
+
+
+    </ui:define>
+
+
+</ui:composition>

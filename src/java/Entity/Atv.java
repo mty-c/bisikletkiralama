@@ -1,24 +1,32 @@
 package Entity;
 
-/**
- *
- * @author 90549
- */
+import java.util.List;
+import java.util.Objects;
+
+
 public class Atv {
 
-    private Long id;
+    private Long atv_id;
     private String marka;
     private String model;
     private int motorhacmi;
     private Kullanici kullanici;
     private int ucret;
+    private List<Kategori> kategoriList;
 
-    public Long getId() {
-        return id;
+    public List<Kategori> getKategoriList() {
+        return kategoriList;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setKategoriList(List<Kategori> kategoriList) {
+        this.kategoriList = kategoriList;
+    }
+    public Long getAtv_id() {
+        return atv_id;
+    }
+
+    public void setAtv_id(Long atv_id) {
+        this.atv_id = atv_id;
     }
 
     public String getMarka() {
@@ -59,5 +67,30 @@ public class Atv {
 
     public void setUcret(int ucret) {
         this.ucret = ucret;
+    }
+    
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 23 * hash + Objects.hashCode(this.atv_id);
+        return hash;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Atv other = (Atv) obj;
+        if (!Objects.equals(this.atv_id, other.atv_id)) {
+            return false;
+        }
+        return true;
     }
 }
