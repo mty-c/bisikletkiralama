@@ -1,0 +1,26 @@
+
+
+#adminhoverboard{
+    margin-top: 5rem;
+}
+#adminhoverboard .card-body{
+    font-size: 20px;
+    
+}
+
+
+
+#hoverboard-list .card{
+    border:none;
+    opacity:0.8;
+    transition: 0.8s ease;
+   
+}
+
+#hoverboard-list .card:hover{
+    opacity:1;
+}
+
+#hoverboard-list .card-header{
+    background-color: #c4e986;
+}
