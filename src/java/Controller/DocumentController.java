@@ -22,7 +22,7 @@ public class DocumentController implements Serializable {
     private DocumentDAO documentDao;
     private String bul = "";
     private Part doc;
-    private final String uploadTo = "C:\\Users\\Talha Yılmaz\\Desktop\\bisiklet\\WebDesign\\web\\document\\upload\\";
+    private final String uploadTo = "D:\\Program Files (x86)\\Java\\JavaProjects\\bisiklet\\bisiklet\\WebDesign\\web\\document\\upload\\";
     
     private int page = 1;
     private int pageSize = 5;
